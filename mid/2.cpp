@@ -17,23 +17,29 @@ bool sorting(work w1, work w2) {
 }
 
 bool solution(int t){
-	sort(v.begin(),v.end(), sorting);
 	int day = 1;
 	int time = 1;
+	sort(v.begin(), v.end(), sorting);
 	for (int i = 0; i < t; i++) {
-		cout << v[i].s << v[i].e << v[i].w<<endl;
-		if (day <= v[i].s) {
+		if (day == v[i].s) {
 			if (day > v[i].e)	return false;
 			while (v[i].w > 0) {
 				time++;
 				v[i].w--;
-				cout << i << " ";
 				if (time == 9) {
 					if (day > v[i].e)	return false;
 					day++; time = 1;
+					if (v[i].w != 0) { v[i].s++; sort(v.begin(), v.end(), sorting); }
 				}
 			}
 			cout << endl;
+		}
+		else if (day>v[i].s)
+		{
+			v[i].s++;
+		}
+		else {
+			day++; i--;
 		}
 	}
 	return true;
@@ -54,7 +60,7 @@ int main() {
 		}
 		if (solution(T))	cout << "yes"<<endl;
 		else cout << "no"<<endl;
-
+		v.clear();
 	}
 	return 0;
 }
