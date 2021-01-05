@@ -3,7 +3,7 @@
 using namespace std;
 
 int DT[101];
-
+//하향식
 int f(int n) {
 	if (n ==1)	return 1;
 	if (!DT[n])	DT[n] = f(n - 1) + n;
