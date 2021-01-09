@@ -44,7 +44,7 @@ int main() {
 		parent[i] = i;
 	}
 	int count = 0;
-	for (int i = 0; i < M; i++) {
+	for (int i = 0; i < M; i++) { 
 		if (merge(v[i].u, v[i].v)) {
 			count += v[i].w;
 		}
