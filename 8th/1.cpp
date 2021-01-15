@@ -1,11 +1,11 @@
 #include<iostream>
+#include<queue>
 
 using namespace std;
 
 int L, R, C;
 char space[30][30][30];
 int f[30][30][30];
-int minute, result, minm;
 
 struct point {
 	int i, j, k;
@@ -15,26 +15,35 @@ struct point startp;
 struct point endp;
 
 int start(int l, int r, int c) {
-	minute++;
-	cout << l << r << c << endl;
-	if (space[l][r][c] == 'E') {
-		result = minute;
+	queue<pair<pair<int, int>, pair<int, int>>> q;//l,r,c,minute
+	int visited[30][30][30] = { 0, };
+	q.push({ { l,r }, { c,1 } });
+	visited[l][r][c] = 1;
+	//cout << l << r << c<<d[l][r][c] << endl;
+	while (!q.empty()) {
+		int z = q.front().first.first;
+		int y = q.front().first.second;
+		int x = q.front().second.first;
+		int minute = q.front().second.second;
+		q.pop();
+
+		if (space[z][y][x] == 'E')	return minute;
 	}
-	f[l][r][c] = 1;
+	if (space[l][r][c] == 'E') {
+		return 0;
+	}
+	//char temp = space[l][r][c];
+	//space[l][r][c] = '#';
 	//l++,l--,r++,r--,c++,c--
-	bool A = l + 1 < L && space[l + 1][r][c] != '#' && f[l + 1][r][c] == 0;
-	bool B = l - 1 >= 0 && space[l - 1][r][c] != '#' && f[l - 1][r][c] == 0;
-	bool C = r + 1 < R && space[l][r + 1][c] != '#' && f[l][r + 1][c] == 0;
-	bool D = r - 1 >= 0 && space[l][r - 1][c] != '#' && f[l][r - 1][c] == 0;
-	bool E = c + 1 < C && space[l][r][c + 1] != '#' && f[l][r][c + 1] == 0;
-	bool F = c - 1 >= 0 && space[l][r][c - 1] != '#' && f[l][r][c - 1] == 0;
-	if (l + 1 < L && space[l + 1][r][c] != '#' && f[l + 1][r][c] == 0)	start(l + 1, r, c);
-	if (l - 1 >= 0 && space[l - 1][r][c] != '#' && f[l - 1][r][c] == 0)	start(l - 1, r, c);
-	if (r + 1 < R && space[l][r + 1][c] != '#' && f[l][r + 1][c] == 0)	start(l, r + 1, c);
-	if (r - 1 >= 0 && space[l][r - 1][c] != '#' && f[l][r - 1][c] == 0)	start(l, r - 1, c);
-	if (c + 1 < C && space[l][r][c + 1] != '#' && f[l][r][c + 1] == 0)	start(l, r, c + 1);
-	if (c - 1 >= 0 && space[l][r][c - 1] != '#' && f[l][r][c - 1] == 0)	start(l, r, c - 1);
-	if (!A && !B && !C && !D && !E && !F)	minute--;
+	if (l + 1 < L && space[l + 1][r][c] != '#' && f[l + 1][r][c] == 0) {if(d[l + 1][r][c] > d[l][r][c]+1) d[l + 1][r][c] = d[l][r][c] + 1; start(l + 1, r, c); }
+	if (l - 1 >= 0 && space[l - 1][r][c] != '#' && f[l - 1][r][c] == 0)	{if(d[l - 1][r][c] > d[l][r][c]+1)d[l - 1][r][c] = d[l][r][c] + 1; start(l - 1, r, c);}
+	if (r + 1 < R && space[l][r + 1][c] != '#' && f[l][r + 1][c] == 0) {if(d[l][r + 1][c] > d[l][r][c]+1) d[l][r + 1][c] = d[l][r][c] + 1; start(l, r + 1, c); }
+	if (r - 1 >= 0 && space[l][r - 1][c] != '#' && f[l][r - 1][c] == 0) {if(d[l][r - 1][c] > d[l][r][c] + 1) d[l][r - 1][c] = d[l][r][c] + 1; start(l, r - 1, c); }
+	if (c + 1 < C && space[l][r][c + 1] != '#' && f[l][r][c + 1] == 0) {if(d[l][r][c + 1] > d[l][r][c] + 1) d[l][r][c + 1] = d[l][r][c] + 1; start(l, r, c + 1); }
+	if (c - 1 >= 0 && space[l][r][c - 1] != '#' && f[l][r][c - 1] == 0) {if(d[l][r][c - 1] > d[l][r][c] + 1) d[l][r][c - 1] = d[l][r][c] + 1; start(l, r, c - 1); }
+	//if (AA + BB + CC + DD + EE + FF >1)	minute--;
+	//space[l][r][c] = temp;
+	//cout << l << r << c << d[l][r][c]<< endl;
 	return 0;
 }
 
@@ -47,26 +56,20 @@ int escape(int l, int r, int c) {
 				cin >> c;
 				if (c == 'S') {
 					startp.i = i; startp.j = j; startp.k = k;
-					c = '.';
 				}
-				if (c == 'E') {
-					//endp.i = i; endp.j = j; endp.k = k;
-					//c = '.';
-				}
+				/*if (c == 'E') {
+					endp.i = i; endp.j = j; endp.k = k;
+				}*/
 				space[i][j][k] = c;
 			}
 		}
 	}
-	minute = -1;
-	result = 0;
-	minm = 0;
-	fill_n(f[0][0], 2700, 0);
-	//f[30][30][30] = { 0, };
 	start(startp.i, startp.j, startp.k);
-	if (result == 0)	cout << "Trapped!" << endl;
+
+	if (d[endp.i][endp.j][endp.k] == 99999999)	cout << "Trapped!" << endl;
 	else
 	{
-		cout << "Escaped in " << result << " minute(s)." << endl;
+		cout << "Escaped in " << d[endp.i][endp.j][endp.k] << " minute(s)." << endl;
 	}
 	return 0;
 }
