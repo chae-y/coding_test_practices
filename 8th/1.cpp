@@ -66,10 +66,10 @@ int main() {
 			}
 		}
 		int result = start(startp.i, startp.j, startp.k);
-		if (result == -1)	cout << "Trapped!" << endl;
+		if (result == -1)	cout << "Trapped!\n";
 		else
 		{
-			cout << "Escaped in " << result << " minute(s)." << endl;
+			cout << "Escaped in " << result << " minute(s).\n";
 		}
 		cin >> L >> R >> C;
 	}
