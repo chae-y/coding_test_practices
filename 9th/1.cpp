@@ -11,7 +11,7 @@ vector<int> H;
 
 int binary_search(int start, int end) {
 	int mid = (start + end) / 2;
-	int sum = 0;
+	long long sum = 0;
 	
 	if (start > end)	return result;
 
